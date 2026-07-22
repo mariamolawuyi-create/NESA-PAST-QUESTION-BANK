@@ -1,91 +1,356 @@
 {
     "100": {
         "first": [
-            { "code": "GST 111", "name": "Communication Skills in English", "files": [] },
-            { "code": "ECO 101", "name": "Principles of Economics I", "files": [] },
-            { "code": "ECO 103", "name": "Introductory Mathematics I", "files": [] },
-            { "code": "PAU-ECO 105", "name": "Principles of Accounting I", "files": [] },
-            { "code": "PAU-ECO 107", "name": "Introduction to Business I", "files": [] },
-            { "code": "PAU-ECO 109", "name": "Introduction to Finance I", "files": [] },
-            { "code": "GST 112", "name": "Nigerian Peoples and Culture", "files": [] }
+            {
+                "code": "GST 111",
+                "name": "Communication Skills in English",
+                "files": []
+            },
+            {
+                "code": "ECO 101",
+                "name": "Principles of Economics I",
+                "files": []
+            },
+            {
+                "code": "ECO 103",
+                "name": "Introductory Mathematics I",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 105",
+                "name": "Principles of Accounting I",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 107",
+                "name": "Introduction to Business I",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 109",
+                "name": "Introduction to Finance I",
+                "files": []
+            },
+            {
+                "code": "GST 112",
+                "name": "Nigerian Peoples and Culture",
+                "files": []
+            }
         ],
         "second": [
-            { "code": "PAU-ECO 191", "name": "Introduction to Christian Theology", "files": [] },
-            { "code": "ECO 102", "name": "Principles of Economics II", "files": [] },
-            { "code": "ECO 104", "name": "Introductory Mathematics II", "files": [] },
-            { "code": "PAU-ECO 106", "name": "Introduction to Money and Banking", "files": [] },
-            { "code": "PAU-ECO 108", "name": "Principles of Accounting II", "files": [] },
-            { "code": "PAU-ECO 110", "name": "Introduction to Business II", "files": [] },
-            { "code": "PAU-ECO 112", "name": "Introduction to Finance II", "files": [] }
+            {
+                "code": "PAU-ECO 191",
+                "name": "Introduction to Christian Theology",
+                "files": []
+            },
+            {
+                "code": "ECO 102",
+                "name": "Principles of Economics II",
+                "files": []
+            },
+            {
+                "code": "ECO 104",
+                "name": "Introductory Mathematics II",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 106",
+                "name": "Introduction to Money and Banking",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 108",
+                "name": "Principles of Accounting II",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 110",
+                "name": "Introduction to Business II",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 112",
+                "name": "Introduction to Finance II",
+                "files": []
+            }
         ]
     },
     "200": {
         "first": [
-            { "code": "GST 212", "name": "Philosophy, Logic and Human Existence", "files": [] },
-            { "code": "ENT 211", "name": "Entrepreneurship and Innovation", "files": [] },
-            { "code": "ECO 201", "name": "Introduction to Microeconomics I", "files": [] },
-            { "code": "ECO 203", "name": "Introduction to Macroeconomics I", "files": [] },
-            { "code": "ECO 205", "name": "Structure of the Nigerian Economy", "files": [] },
-            { "code": "PAU-ECO 292", "name": "The Nature of Human Beings", "files": [] },
-            { "code": "PAU-ECO 209", "name": "Introduction to Statistics", "files": [] }
+            {
+                "code": "GST 212",
+                "name": "Philosophy, Logic and Human Existence",
+                "files": []
+            },
+            {
+                "code": "ENT 211",
+                "name": "Entrepreneurship and Innovation",
+                "files": []
+            },
+            {
+                "code": "ECO 201",
+                "name": "Introduction to Microeconomics I",
+                "files": []
+            },
+            {
+                "code": "ECO 203",
+                "name": "Introduction to Macroeconomics I",
+                "files": []
+            },
+            {
+                "code": "ECO 205",
+                "name": "Structure of the Nigerian Economy",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 292",
+                "name": "The Nature of Human Beings",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 209",
+                "name": "Introduction to Statistics",
+                "files": []
+            }
         ],
         "second": [
-            { "code": "SSC 202", "name": "Introduction to Computer and its Application", "files": [] },
-            { "code": "ECO 202", "name": "Introduction to Microeconomics II", "files": [] },
-            { "code": "ECO 204", "name": "Introduction to Macroeconomics II", "files": [] },
-            { "code": "ECO 206", "name": "Statistics for Economists", "files": [] },
-            { "code": "ECO 207", "name": "Mathematics for Economists", "files": [] },
-            { "code": "PAU-ECO 208", "name": "Labour Economics", "files": [] },
-            { "code": "PAU-ECO 291", "name": "English for Business Purposes", "files": [] }
+            {
+                "code": "SSC 202",
+                "name": "Introduction to Computer and its Application",
+                "files": []
+            },
+            {
+                "code": "ECO 202",
+                "name": "Introduction to Microeconomics II",
+                "files": []
+            },
+            {
+                "code": "ECO 204",
+                "name": "Introduction to Macroeconomics II",
+                "files": []
+            },
+            {
+                "code": "ECO 206",
+                "name": "Statistics for Economists",
+                "files": [
+                    {
+                        "name": "Statistics for Economists 2024/2025",
+                        "url": "pdfs/eco-206/statistics-for-economists-2024-2025-1784719208314.pdf"
+                    }
+                ]
+            },
+            {
+                "code": "ECO 207",
+                "name": "Mathematics for Economists",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 208",
+                "name": "Labour Economics",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 291",
+                "name": "English for Business Purposes",
+                "files": []
+            }
         ]
     },
     "300": {
         "first": [
-            { "code": "ENT 312", "name": "Venture Creation", "files": [] },
-            { "code": "ECO 301", "name": "Intermediate Microeconomics I", "files": [] },
-            { "code": "ECO 303", "name": "Intermediate Macroeconomics I", "files": [] },
-            { "code": "ECO 306", "name": "Introductory Econometrics", "files": [] },
-            { "code": "ECO 307", "name": "Project Evaluation", "files": [] },
-            { "code": "SSC 301", "name": "Innovation in the Social Sciences", "files": [] },
-            { "code": "PAU-ECO 311", "name": "Development Economics", "files": [] },
-            { "code": "PAU-ECO 312", "name": "Data Science for Social Scientist", "files": [] },
-            { "code": "PAU-ECO 313", "name": "International Trade Theory and Policy", "files": [] },
-            { "code": "PAU-ECO 314", "name": "Business Ethics", "files": [] },
-            { "code": "PAU-ECO 315", "name": "Artificial Intelligence", "files": [] }
+            {
+                "code": "ENT 312",
+                "name": "Venture Creation",
+                "files": []
+            },
+            {
+                "code": "ECO 301",
+                "name": "Intermediate Microeconomics I",
+                "files": []
+            },
+            {
+                "code": "ECO 303",
+                "name": "Intermediate Macroeconomics I",
+                "files": []
+            },
+            {
+                "code": "ECO 306",
+                "name": "Introductory Econometrics",
+                "files": []
+            },
+            {
+                "code": "ECO 307",
+                "name": "Project Evaluation",
+                "files": []
+            },
+            {
+                "code": "SSC 301",
+                "name": "Innovation in the Social Sciences",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 311",
+                "name": "Development Economics",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 312",
+                "name": "Data Science for Social Scientist",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 313",
+                "name": "International Trade Theory and Policy",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 314",
+                "name": "Business Ethics",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 315",
+                "name": "Artificial Intelligence",
+                "files": []
+            }
         ],
         "second": [
-            { "code": "ECO 302", "name": "Intermediate Microeconomics II", "files": [] },
-            { "code": "ECO 304", "name": "Intermediate Macroeconomics II", "files": [] },
-            { "code": "ECO 305", "name": "History of Economic Thought", "files": [] },
-            { "code": "ECO 310", "name": "Public Sector Economics", "files": [] },
-            { "code": "SSC 302", "name": "Research Method I", "files": [] },
-            { "code": "GST 312", "name": "Peace and Conflict Resolution", "files": [] },
-            { "code": "PAU-ECO 316", "name": "Data Management", "files": [] },
-            { "code": "PAU-ECO 317", "name": "Public Policy and Analysis", "files": [] },
-            { "code": "PAU-ECO 318", "name": "International Finance", "files": [] },
-            { "code": "PAU-ECO 320", "name": "Advanced Mathematical Economics", "files": [] },
-            { "code": "PAU-ECO 392", "name": "Professional and Personal Skills", "files": [] }
+            {
+                "code": "ECO 302",
+                "name": "Intermediate Microeconomics II",
+                "files": []
+            },
+            {
+                "code": "ECO 304",
+                "name": "Intermediate Macroeconomics II",
+                "files": []
+            },
+            {
+                "code": "ECO 305",
+                "name": "History of Economic Thought",
+                "files": []
+            },
+            {
+                "code": "ECO 310",
+                "name": "Public Sector Economics",
+                "files": []
+            },
+            {
+                "code": "SSC 302",
+                "name": "Research Method I",
+                "files": []
+            },
+            {
+                "code": "GST 312",
+                "name": "Peace and Conflict Resolution",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 316",
+                "name": "Data Management",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 317",
+                "name": "Public Policy and Analysis",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 318",
+                "name": "International Finance",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 320",
+                "name": "Advanced Mathematical Economics",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 392",
+                "name": "Professional and Personal Skills",
+                "files": []
+            }
         ]
     },
     "400": {
         "first": [
-            { "code": "ECO 401", "name": "Advanced Microeconomics I", "files": [] },
-            { "code": "ECO 403", "name": "Advanced Macroeconomics I", "files": [] },
-            { "code": "ECO 405", "name": "Economic Planning", "files": [] },
-            { "code": "ECO 407", "name": "Fiscal Policy and Analysis", "files": [] },
-            { "code": "SSC 401", "name": "Research Method II", "files": [] },
-            { "code": "PAU-ECO 409", "name": "Internship", "files": [] },
-            { "code": "PAU-ECO 411", "name": "Political Economy", "files": [] },
-            { "code": "PAU-ECO 413", "name": "Advanced Econometrics", "files": [] },
-            { "code": "PAU-ECO 415", "name": "Petroleum & Energy Economics", "files": [] }
+            {
+                "code": "ECO 401",
+                "name": "Advanced Microeconomics I",
+                "files": []
+            },
+            {
+                "code": "ECO 403",
+                "name": "Advanced Macroeconomics I",
+                "files": []
+            },
+            {
+                "code": "ECO 405",
+                "name": "Economic Planning",
+                "files": []
+            },
+            {
+                "code": "ECO 407",
+                "name": "Fiscal Policy and Analysis",
+                "files": []
+            },
+            {
+                "code": "SSC 401",
+                "name": "Research Method II",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 409",
+                "name": "Internship",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 411",
+                "name": "Political Economy",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 413",
+                "name": "Advanced Econometrics",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 415",
+                "name": "Petroleum & Energy Economics",
+                "files": []
+            }
         ],
         "second": [
-            { "code": "ECO 402", "name": "Advanced Microeconomics II", "files": [] },
-            { "code": "ECO 404", "name": "Advanced Macroeconomics II", "files": [] },
-            { "code": "ECO 406", "name": "Monetary Theory and Policy", "files": [] },
-            { "code": "ECO 499", "name": "Research Project/Original Essay", "files": [] },
-            { "code": "PAU-ECO 408", "name": "Operations Research", "files": [] },
-            { "code": "PAU-ECO 410", "name": "Industrial Economics", "files": [] }
+            {
+                "code": "ECO 402",
+                "name": "Advanced Microeconomics II",
+                "files": []
+            },
+            {
+                "code": "ECO 404",
+                "name": "Advanced Macroeconomics II",
+                "files": []
+            },
+            {
+                "code": "ECO 406",
+                "name": "Monetary Theory and Policy",
+                "files": []
+            },
+            {
+                "code": "ECO 499",
+                "name": "Research Project/Original Essay",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 408",
+                "name": "Operations Research",
+                "files": []
+            },
+            {
+                "code": "PAU-ECO 410",
+                "name": "Industrial Economics",
+                "files": []
+            }
         ]
     }
 }
