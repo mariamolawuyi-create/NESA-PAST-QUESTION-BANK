@@ -29,7 +29,12 @@
             {
                 "code": "PAU-ECO 109",
                 "name": "Introduction to Finance I",
-                "files": []
+                "files": [
+                    {
+                        "name": "PAU ECO 109 2023/2024",
+                        "url": "pdfs/pau-eco-109/pau-eco-109-2023-2024-1784729016338.pdf"
+                    }
+                ]
             },
             {
                 "code": "GST 112",
