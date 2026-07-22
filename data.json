@@ -215,7 +215,12 @@
             {
                 "code": "PAU-ECO 312",
                 "name": "Data Science for Social Scientist",
-                "files": []
+                "files": [
+                    {
+                        "name": "PAU ECO 312 2025/2026",
+                        "url": "pdfs/pau-eco-312/pau-eco-312-2025-2026-1784734917192.pdf"
+                    }
+                ]
             },
             {
                 "code": "PAU-ECO 313",
