@@ -191,6 +191,45 @@
             background: none;
             color: #1a1a1a;
         }
+
+        .file-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f4f0;
+        }
+
+        .file-row:last-child {
+            border-bottom: none;
+        }
+
+        .file-row .file-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .file-row .file-name {
+            font-size: 12px;
+            color: #9ca3af;
+            width: 130px;
+            flex-shrink: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-row input[type="text"] {
+            flex: 1;
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+
+        .progress-line {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 8px;
+        }
     </style>
 </head>
 
@@ -259,14 +298,14 @@
                 </select>
             </div>
             <div class="field">
-                <label for="admin-label">Label for this file</label>
-                <input type="text" id="admin-label" placeholder="e.g. 2023/2024 First Semester Exam" />
-                <div class="helper-text">This is the text students will see on the download button.</div>
+                <label for="admin-file">PDF file(s)</label>
+                <input type="file" id="admin-file" accept="application/pdf" multiple onchange="onFilesChosen()" />
+                <div class="helper-text">Select one file or several at once — each gets its own label below. Keep individual files under ~20MB to be safe.</div>
             </div>
-            <div class="field">
-                <label for="admin-file">PDF file</label>
-                <input type="file" id="admin-file" accept="application/pdf" />
-                <div class="helper-text">Keep individual files under ~20MB to be safe.</div>
+            <div class="field" id="file-list-field" style="display:none">
+                <label>Labels for each file</label>
+                <div id="file-list"></div>
+                <div class="helper-text">These are auto-filled from the filenames — edit any of them before uploading.</div>
             </div>
             <button id="upload-btn" onclick="uploadFile()" disabled>Upload</button>
             <div class="status" id="status-box"></div>
@@ -275,8 +314,8 @@
 
     <script>
         // ---- ONE-TIME SETUP: fill these in before using this page ----
-        const GITHUB_OWNER = 'mariamolawuyi-create';
-        const GITHUB_REPO = 'NESA-PAST-QUESTION-BANK';
+        const GITHUB_OWNER = 'YOUR_GITHUB_USERNAME';
+        const GITHUB_REPO = 'YOUR_REPO_NAME';
         const GITHUB_BRANCH = 'main';
         // ----------------------------------------------------------------
 
@@ -422,29 +461,62 @@
             return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
         }
 
-        // ---------- Upload flow ----------
+        function labelFromFilename(filename) {
+            const withoutExt = filename.replace(/\.pdf$/i, '');
+            const spaced = withoutExt.replace(/[_\-]+/g, ' ').trim();
+            return spaced.charAt(0).toUpperCase() + spaced.slice(1);
+        }
+
+        function onFilesChosen() {
+            const fileInput = document.getElementById('admin-file');
+            const files = Array.from(fileInput.files);
+            const listField = document.getElementById('file-list-field');
+            const listDiv = document.getElementById('file-list');
+
+            listDiv.innerHTML = '';
+
+            if (files.length === 0) {
+                listField.style.display = 'none';
+                return;
+            }
+
+            files.forEach((file, index) => {
+                const row = document.createElement('div');
+                row.className = 'file-row';
+                row.innerHTML = `
+                    <span class="file-icon">📄</span>
+                    <span class="file-name" title="${file.name}">${file.name}</span>
+                    <input type="text" class="file-label-input" data-index="${index}" value="${labelFromFilename(file.name)}" />
+                `;
+                listDiv.appendChild(row);
+            });
+
+            listField.style.display = 'block';
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
         async function uploadFile() {
             const level = document.getElementById('admin-level').value;
             const semester = document.getElementById('admin-semester').value;
             const courseCode = document.getElementById('admin-course').value;
-            const label = document.getElementById('admin-label').value.trim();
             const fileInput = document.getElementById('admin-file');
-            const file = fileInput.files[0];
+            const files = Array.from(fileInput.files);
+            const labelInputs = document.querySelectorAll('.file-label-input');
 
             if (!level || !semester || !courseCode) {
                 setStatus('Select a level, semester and course first.', 'error');
                 return;
             }
-            if (!label) {
-                setStatus('Give this file a label, e.g. "2023/2024 First Semester Exam".', 'error');
+            if (files.length === 0) {
+                setStatus('Choose at least one PDF file first.', 'error');
                 return;
             }
-            if (!file) {
-                setStatus('Choose a PDF file first.', 'error');
-                return;
-            }
-            if (file.type !== 'application/pdf') {
-                setStatus('That file is not a PDF. Please choose a .pdf file.', 'error');
+            const badFile = files.find(f => f.type !== 'application/pdf');
+            if (badFile) {
+                setStatus(`"${badFile.name}" is not a PDF. Please only select .pdf files.`, 'error');
                 return;
             }
             if (GITHUB_OWNER === 'YOUR_GITHUB_USERNAME' || GITHUB_REPO === 'YOUR_REPO_NAME') {
@@ -452,55 +524,75 @@
                 return;
             }
 
+            const labels = files.map((_, i) => (labelInputs[i] && labelInputs[i].value.trim()) || labelFromFilename(files[i].name));
             const uploadBtn = document.getElementById('upload-btn');
             uploadBtn.disabled = true;
 
+            const succeeded = []; // { name, url }
+            const failed = [];    // { name, reason }
+            const courseSlug = slugify(courseCode);
+
             try {
-                setStatus('Reading file...', 'info');
-                const arrayBuffer = await file.arrayBuffer();
-                const fileBase64 = arrayBufferToBase64(arrayBuffer);
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const label = labels[i];
+                    setStatus(`Uploading file ${i + 1} of ${files.length}: ${file.name}...`, 'info');
 
-                const courseSlug = slugify(courseCode);
-                const fileSlug = slugify(label) || 'question';
-                const timestamp = Date.now();
-                const path = `pdfs/${courseSlug}/${fileSlug}-${timestamp}.pdf`;
+                    try {
+                        const arrayBuffer = await file.arrayBuffer();
+                        const fileBase64 = arrayBufferToBase64(arrayBuffer);
+                        const fileSlug = slugify(label) || 'question';
+                        const timestamp = Date.now() + i; // avoid same-millisecond collisions in a fast batch
+                        const path = `pdfs/${courseSlug}/${fileSlug}-${timestamp}.pdf`;
 
-                setStatus('Uploading PDF to GitHub...', 'info');
-                const putFileRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${githubToken}`,
-                        'Accept': 'application/vnd.github+json'
-                    },
-                    body: JSON.stringify({
-                        message: `Add past question: ${courseCode} - ${label}`,
-                        content: fileBase64,
-                        branch: GITHUB_BRANCH
-                    })
-                });
+                        const putFileRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `token ${githubToken}`,
+                                'Accept': 'application/vnd.github+json'
+                            },
+                            body: JSON.stringify({
+                                message: `Add past question: ${courseCode} - ${label}`,
+                                content: fileBase64,
+                                branch: GITHUB_BRANCH
+                            })
+                        });
 
-                if (!putFileRes.ok) {
-                    const errBody = await putFileRes.json().catch(() => ({}));
-                    throw new Error(`Upload failed (status ${putFileRes.status}): ${errBody.message || 'unknown error'}`);
+                        if (!putFileRes.ok) {
+                            const errBody = await putFileRes.json().catch(() => ({}));
+                            throw new Error(errBody.message || `status ${putFileRes.status}`);
+                        }
+
+                        succeeded.push({ name: label, url: path });
+                    } catch (fileErr) {
+                        failed.push({ name: file.name, reason: fileErr.message });
+                    }
+
+                    // small pause between requests so a big batch doesn't trip GitHub's rate limiting
+                    if (i < files.length - 1) await sleep(300);
                 }
 
-                setStatus('PDF uploaded. Updating course list...', 'info');
+                if (succeeded.length === 0) {
+                    throw new Error('None of the files uploaded successfully. Nothing was added to the course list.');
+                }
 
-                // fetch the latest data.json (need current sha to update it safely)
+                setStatus(`Uploaded ${succeeded.length} of ${files.length} file(s). Updating course list...`, 'info');
+
+                // one combined data.json update for everything that succeeded
                 const getDataRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/data.json?ref=${GITHUB_BRANCH}`, {
                     headers: {
                         'Authorization': `token ${githubToken}`,
                         'Accept': 'application/vnd.github+json'
                     }
                 });
-                if (!getDataRes.ok) throw new Error('PDF uploaded, but could not read data.json to register it. Check the repo manually.');
+                if (!getDataRes.ok) throw new Error('Files uploaded, but could not read data.json to register them. Check the repo manually.');
                 const dataJson = await getDataRes.json();
                 const latestData = JSON.parse(base64ToUtf8(dataJson.content));
 
                 const course = latestData[level][semester].find(c => c.code === courseCode);
-                if (!course) throw new Error('PDF uploaded, but that course was not found in data.json. Check the repo manually.');
+                if (!course) throw new Error('Files uploaded, but that course was not found in data.json. Check the repo manually.');
 
-                course.files.push({ name: label, url: path });
+                succeeded.forEach(entry => course.files.push(entry));
 
                 const updatedContentBase64 = utf8ToBase64(JSON.stringify(latestData, null, 4));
 
@@ -511,7 +603,7 @@
                         'Accept': 'application/vnd.github+json'
                     },
                     body: JSON.stringify({
-                        message: `Register past question: ${courseCode} - ${label}`,
+                        message: `Register ${succeeded.length} past question(s) for ${courseCode}`,
                         content: updatedContentBase64,
                         sha: dataJson.sha,
                         branch: GITHUB_BRANCH
@@ -520,13 +612,21 @@
 
                 if (!putDataRes.ok) {
                     const errBody = await putDataRes.json().catch(() => ({}));
-                    throw new Error(`PDF uploaded, but updating data.json failed (status ${putDataRes.status}): ${errBody.message || 'unknown error'}. If someone else uploaded at the same moment, just try again.`);
+                    throw new Error(`Files uploaded, but updating data.json failed: ${errBody.message || 'unknown error'}. If someone else uploaded at the same moment, just try again.`);
                 }
 
                 courseData = latestData;
-                setStatus(`Done! "${label}" was added to ${courseCode}. It can take a minute for GitHub Pages to update the live site.`, 'success');
-                document.getElementById('admin-label').value = '';
+
+                let message = `Done! ${succeeded.length} of ${files.length} file(s) added to ${courseCode}.`;
+                if (failed.length > 0) {
+                    message += ` Failed: ${failed.map(f => `${f.name} (${f.reason})`).join(', ')}.`;
+                }
+                message += ' It can take a minute for GitHub Pages to update the live site.';
+                setStatus(message, failed.length > 0 ? 'error' : 'success');
+
                 fileInput.value = '';
+                document.getElementById('file-list').innerHTML = '';
+                document.getElementById('file-list-field').style.display = 'none';
             } catch (err) {
                 setStatus(err.message, 'error');
             } finally {
