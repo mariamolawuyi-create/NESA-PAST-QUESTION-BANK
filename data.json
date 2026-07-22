@@ -306,7 +306,12 @@
             {
                 "code": "ECO 401",
                 "name": "Advanced Microeconomics I",
-                "files": []
+                "files": [
+                    {
+                        "name": "Advanced Microeconomics",
+                        "url": "pdfs/eco-401/advanced-microeconomics-1784735851045.pdf"
+                    }
+                ]
             },
             {
                 "code": "ECO 403",
