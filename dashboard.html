@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NESA PAU | Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f0;
+            min-height: 100vh;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background-color: #1b4332;
+            min-height: 100vh;
+            padding: 24px 16px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: white;
+            margin-bottom: 32px;
+            padding: 0 8px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 10px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: #b7e4c7;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background-color: #2d6a4f;
+            color: white;
+        }
+
+        .nav-item.active {
+            background-color: #40916c;
+            color: white;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .welcome-section {
+            max-width: 800px;
+        }
+
+        .welcome-text h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .welcome-text p {
+            font-size: 15px;
+            color: #6b7280;
+            margin-bottom: 32px;
+        }
+
+        .quick-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .quick-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            flex: 1;
+            border: 1.5px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-card:hover {
+            border-color: #2d6a4f;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .quick-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .quick-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+        }
+
+        .quick-desc {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .section-header {
+            margin-bottom: 32px;
+        }
+
+        .section-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .section-header p {
+            font-size: 15px;
+            color: #6b7280;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6b7280;
+        }
+
+        .dropdown {
+            padding: 10px 14px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #1a1a1a;
+            background: white;
+            cursor: pointer;
+            outline: none;
+            min-width: 200px;
+            transition: border-color 0.15s;
+        }
+
+        .dropdown:focus {
+            border-color: #2d6a4f;
+        }
+
+        .pdf-header {
+            margin-bottom: 16px;
+        }
+
+        .pdf-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .pdf-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: white;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: all 0.15s;
+        }
+
+        .pdf-item:hover {
+            border-color: #2d6a4f;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .pdf-icon {
+            font-size: 20px;
+        }
+
+        .pdf-name {
+            flex: 1;
+            font-size: 14px;
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        .pdf-download {
+            font-size: 13px;
+            color: #2d6a4f;
+            font-weight: 600;
+        }
+
+        .no-files {
+            font-size: 14px;
+            color: #6b7280;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1.5px dashed #e5e7eb;
+            text-align: center;
+        }
+
+        .textbook-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 800px;
+        }
+
+        .textbook-card {
+            background: white;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.15s;
+        }
+
+        .textbook-card:hover {
+            border-color: #2d6a4f;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .textbook-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .textbook-info {
+            flex: 1;
+        }
+
+        .textbook-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .textbook-author {
+            font-size: 13px;
+            color: #2d6a4f;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .textbook-desc {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .textbook-download {
+            padding: 8px 16px;
+            background: #1b4332;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            flex-shrink: 0;
+            transition: background 0.15s;
+        }
+
+        .textbook-download:hover {
+            background: #2d6a4f;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+
+        <aside class="sidebar">
+            <div class="sidebar-logo">NESA PAU</div>
+            <nav class="sidebar-nav">
+                <a href="#" id="nav-home" class="nav-item active" onclick="showSection('home', this)">🏠 Home</a>
+                <a href="#" id="nav-past-questions" class="nav-item" onclick="showSection('past-questions', this)">📄 Past Questions</a>
+                <a href="#" id="nav-textbooks" class="nav-item" onclick="showSection('textbooks', this)">📚 Textbooks</a>
+                <a href="#" id="nav-practice" class="nav-item" onclick="showSection('practice', this)">🎯 Practice Test</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="section" id="home">
+                <div class="welcome-section">
+                    <div class="welcome-text">
+                        <h1>Welcome back, Temi 👋</h1>
+                        <p>What would you like to do today?</p>
+                    </div>
+                    <div class="quick-links">
+                        <div class="quick-card"
+                            onclick="showSection('past-questions', document.getElementById('nav-past-questions'))">
+                            <div class="quick-icon">📄</div>
+                            <div class="quick-title">Past Questions</div>
+                            <div class="quick-desc">Browse by level, semester and course</div>
+                        </div>
+
+                        <div class="quick-card"
+                            onclick="showSection('textbooks', document.getElementById('nav-textbooks'))">
+                            <div class="quick-icon">📚</div>
+                            <div class="quick-title">Textbooks</div>
+                            <div class="quick-desc">Download recommended textbooks</div>
+                        </div>
+
+                        <div class="quick-card"
+                            onclick="showSection('practice', document.getElementById('nav-practice'))">
+                            <div class="quick-icon">🎯</div>
+                            <div class="quick-title">Practice Test</div>
+                            <div class="quick-desc">Practice by topic for targeted revision</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" id="past-questions" style="display:none">
+                <div class="section-header">
+                    <h1>Past Questions</h1>
+                    <p>Select your level, semester and course to find past questions</p>
+                </div>
+
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label class="filter-label">Level</label>
+                        <select class="dropdown" id="level-select" onchange="handleLevelChange()" disabled>
+                            <option value="">-- Select Level --</option>
+                            <option value="100">100 Level</option>
+                            <option value="200">200 Level</option>
+                            <option value="300">300 Level</option>
+                            <option value="400">400 Level</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" id="semester-group" style="display:none">
+                        <label class="filter-label">Semester</label>
+                        <select class="dropdown" id="semester-select" onchange="handleSemesterChange()">
+                            <option value="">-- Select Semester --</option>
+                            <option value="first">First Semester</option>
+                            <option value="second">Second Semester</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" id="course-group" style="display:none">
+                        <label class="filter-label">Course</label>
+                        <select class="dropdown" id="course-select" onchange="handleCourseChange()">
+                            <option value="">-- Select Course --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="pdf-list" style="display:none">
+                    <div class="pdf-header">
+                        <h2 id="pdf-title"></h2>
+                    </div>
+                    <div id="pdf-items"></div>
+                </div>
+            </div>
+
+            <div class="section" id="textbooks" style="display:none">
+                <div class="section-header">
+                    <h1>Textbooks</h1>
+                    <p>Recommended textbooks for Economics students</p>
+                </div>
+                <div class="textbook-grid" id="textbook-grid"></div>
+            </div>
+
+            <div class="section" id="practice" style="display:none">
+                <h1>Practice Test</h1>
+                <p>Select your level to get started</p>
+            </div>
+        </main>
+
+    </div>
+    <script>
+        // pastQuestions is loaded at runtime from data.json instead of being hardcoded,
+        // so admin.html can add new past questions without editing this file.
+        let pastQuestions = {};
+
+        async function loadCourseData() {
+            const levelSelect = document.getElementById('level-select');
+            try {
+                // cache-bust so a freshly uploaded file shows up without a hard refresh
+                const res = await fetch('data.json?t=' + Date.now());
+                if (!res.ok) throw new Error('Failed to fetch data.json');
+                pastQuestions = await res.json();
+                levelSelect.disabled = false;
+            } catch (err) {
+                console.error('Could not load course data:', err);
+                levelSelect.innerHTML = '<option value="">-- Failed to load courses, try refreshing --</option>';
+            }
+        }
+        loadCourseData();
+
+        const textbooks = [
+            {
+                title: "Macroeconomic Theory",
+                author: "M.L. Jhingan",
+                description: "Comprehensive coverage of macroeconomic theory from classical to modern approaches.",
+                url: "#"
+            },
+            {
+                title: "The Nature of Human Beings",
+                author: "Juan Manuel Elegido",
+                description: "Covers the nature and dignity of human persons from a philosophical perspective.",
+                url: "#"
+            },
+            {
+                title: "Essential Mathematics for Economics and Business",
+                author: "Teresa Bradley",
+                description: "Accessible introduction to mathematical methods used in economics and business.",
+                url: "#"
+            },
+            {
+                title: "Statistics (Schaum's Outline)",
+                author: "Murray Spiegel",
+                description: "Clear and practical introduction to statistics with plenty of solved problems.",
+                url: "#"
+            },
+            {
+                title: "Understanding Business",
+                author: "William Nickels",
+                description: "Broad introduction to business concepts, management and entrepreneurship.",
+                url: "#"
+            },
+            {
+                title: "Introduction to Business",
+                author: "Lawrence Gitman",
+                description: "Foundational text covering core business principles, finance and management.",
+                url: "#"
+            },
+            {
+                title: "Principles of Economics",
+                author: "N. Gregory Mankiw",
+                description: "The most widely used introductory economics text covering micro and macro foundations.",
+                url: "#"
+            },
+            {
+                title: "Fundamental Methods of Mathematical Economics",
+                author: "Alpha C. Chiang",
+                description: "The standard reference for mathematical methods in economics including calculus, linear algebra and optimisation.",
+                url: "#"
+            },
+        ];
+        function showSection(sectionId, clickedLink) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            document.getElementById(sectionId).style.display = 'block';
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            clickedLink.classList.add('active');
+
+            // render textbooks when that section opens
+            if (sectionId === 'textbooks') {
+                renderTextbooks();
+            }
+        }
+        function handleLevelChange() {
+            const level = document.getElementById('level-select').value;
+
+            // reset semester and course dropdowns
+            document.getElementById('semester-select').value = '';
+            document.getElementById('course-select').innerHTML = '<option value="">-- Select Course --</option>';
+            document.getElementById('pdf-list').style.display = 'none';
+
+            // show or hide semester dropdown
+            if (level) {
+                document.getElementById('semester-group').style.display = 'block';
+                document.getElementById('course-group').style.display = 'none';
+            } else {
+                document.getElementById('semester-group').style.display = 'none';
+                document.getElementById('course-group').style.display = 'none';
+            }
+        }
+
+        function handleSemesterChange() {
+            const level = document.getElementById('level-select').value;
+            const semester = document.getElementById('semester-select').value;
+            const courseSelect = document.getElementById('course-select');
+
+            // reset course dropdown
+            courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
+            document.getElementById('pdf-list').style.display = 'none';
+
+            if (level && semester) {
+                // get courses for this level and semester
+                const courses = pastQuestions[level][semester];
+
+                // populate course dropdown
+                courses.forEach(course => {
+                    const option = document.createElement('option');
+                    option.value = course.code;
+                    option.textContent = `${course.code} - ${course.name}`;
+                    courseSelect.appendChild(option);
+                });
+
+                document.getElementById('course-group').style.display = 'block';
+            } else {
+                // semester was cleared — hide the course dropdown too
+                document.getElementById('course-group').style.display = 'none';
+            }
+        }
+
+        function handleCourseChange() {
+            const level = document.getElementById('level-select').value;
+            const semester = document.getElementById('semester-select').value;
+            const courseCode = document.getElementById('course-select').value;
+
+            if (!courseCode) {
+                // course was cleared — hide the pdf list
+                document.getElementById('pdf-list').style.display = 'none';
+                return;
+            }
+
+            // find the selected course
+            const courses = pastQuestions[level][semester];
+            const course = courses.find(c => c.code === courseCode);
+
+            // show pdf section
+            document.getElementById('pdf-title').textContent = `${course.code} - ${course.name}`;
+            document.getElementById('pdf-list').style.display = 'block';
+
+            // show files or empty message
+            const pdfItems = document.getElementById('pdf-items');
+            if (course.files.length === 0) {
+                pdfItems.innerHTML = '<p class="no-files">No past questions uploaded yet for this course.</p>';
+            } else {
+                pdfItems.innerHTML = course.files.map(file => `
+            <a class="pdf-item" href="${file.url}" target="_blank">
+                <span class="pdf-icon">📄</span>
+                <span class="pdf-name">${file.name}</span>
+                <span class="pdf-download">Download</span>
+            </a>
+        `).join('');
+            }
+        }
+        function renderTextbooks() {
+            const grid = document.getElementById('textbook-grid');
+
+            grid.innerHTML = textbooks.map(book => `
+        <div class="textbook-card">
+            <div class="textbook-icon">📚</div>
+            <div class="textbook-info">
+                <div class="textbook-title">${book.title}</div>
+                <div class="textbook-author">${book.author}</div>
+                <div class="textbook-desc">${book.description}</div>
+            </div>
+            <a class="textbook-download" href="${book.url}" target="_blank">
+                Download
+            </a>
+        </div>
+    `).join('');
+        }
+    </script>
+</body>
+
+</html>

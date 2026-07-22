@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NESA PAU | Admin Upload</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .admin-wrap {
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            margin-bottom: 24px;
+        }
+
+        .admin-logo {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #2d6a4f;
+            margin-bottom: 8px;
+        }
+
+        .admin-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+        }
+
+        .admin-header p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            border: 1.5px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+
+        .field input[type="text"],
+        .field input[type="password"],
+        select,
+        input[type="file"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #1a1a1a;
+            background: white;
+            outline: none;
+        }
+
+        .field input:focus,
+        select:focus {
+            border-color: #2d6a4f;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .checkbox-row input {
+            width: auto;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 20px;
+            background-color: #1b4332;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #2d6a4f;
+        }
+
+        button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .status.info {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .status.success {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .status.error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .helper-text {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .signed-in-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #166534;
+        }
+
+        .signed-in-row button.link-btn {
+            width: auto;
+            background: none;
+            color: #6b7280;
+            padding: 4px 8px;
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        .signed-in-row button.link-btn:hover {
+            background: none;
+            color: #1a1a1a;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-wrap">
+        <div class="admin-header">
+            <div class="admin-logo">NESA PAU · Admin</div>
+            <h1>Upload past questions</h1>
+            <p>This page is not linked anywhere on the public site. Bookmark it.</p>
+        </div>
+
+        <!-- Step 1: connect with a GitHub token -->
+        <div class="card" id="token-card">
+            <h2>Step 1 — Connect</h2>
+            <div id="token-form">
+                <div class="field">
+                    <label for="gh-token">GitHub Personal Access Token</label>
+                    <input type="password" id="gh-token" placeholder="ghp_..." />
+                    <div class="helper-text">
+                        One-time setup: create a fine-grained token scoped ONLY to this repository with
+                        "Contents: Read and write" permission. See ADMIN-SETUP.md for step-by-step instructions.
+                        Treat this token like a password — never share it or paste it anywhere else.
+                    </div>
+                </div>
+                <div class="field checkbox-row">
+                    <input type="checkbox" id="remember-token" />
+                    <label for="remember-token" style="text-transform:none;font-size:13px;font-weight:400;">
+                        Remember on this device (only do this on your own computer)
+                    </label>
+                </div>
+                <button id="connect-btn" onclick="connectToken()">Connect</button>
+            </div>
+            <div id="signed-in-view" style="display:none">
+                <div class="signed-in-row">
+                    <span>✓ Connected</span>
+                    <button class="link-btn" onclick="disconnectToken()">Disconnect</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: choose course + file -->
+        <div class="card">
+            <h2>Step 2 — Choose course and file</h2>
+            <div class="field">
+                <label for="admin-level">Level</label>
+                <select id="admin-level" onchange="onLevelChange()" disabled>
+                    <option value="">-- Select Level --</option>
+                    <option value="100">100 Level</option>
+                    <option value="200">200 Level</option>
+                    <option value="300">300 Level</option>
+                    <option value="400">400 Level</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="admin-semester">Semester</label>
+                <select id="admin-semester" onchange="onSemesterChange()" disabled>
+                    <option value="">-- Select Semester --</option>
+                    <option value="first">First Semester</option>
+                    <option value="second">Second Semester</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="admin-course">Course</label>
+                <select id="admin-course" disabled>
+                    <option value="">-- Select Course --</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="admin-label">Label for this file</label>
+                <input type="text" id="admin-label" placeholder="e.g. 2023/2024 First Semester Exam" />
+                <div class="helper-text">This is the text students will see on the download button.</div>
+            </div>
+            <div class="field">
+                <label for="admin-file">PDF file</label>
+                <input type="file" id="admin-file" accept="application/pdf" />
+                <div class="helper-text">Keep individual files under ~20MB to be safe.</div>
+            </div>
+            <button id="upload-btn" onclick="uploadFile()" disabled>Upload</button>
+            <div class="status" id="status-box"></div>
+        </div>
+    </div>
+
+    <script>
+        // ---- ONE-TIME SETUP: fill these in before using this page ----
+        const GITHUB_OWNER = 'YOUR_GITHUB_USERNAME';
+        const GITHUB_REPO = 'YOUR_REPO_NAME';
+        const GITHUB_BRANCH = 'main';
+        // ----------------------------------------------------------------
+
+        let githubToken = null;
+        let courseData = null;
+
+        function setStatus(message, type) {
+            const box = document.getElementById('status-box');
+            box.textContent = message;
+            box.className = 'status show ' + type;
+        }
+
+        function clearStatus() {
+            const box = document.getElementById('status-box');
+            box.className = 'status';
+        }
+
+        // ---------- Step 1: token handling ----------
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('nesaPauAdminToken');
+            if (saved) {
+                githubToken = saved;
+                showSignedIn();
+                loadCourseDataForAdmin();
+            }
+        });
+
+        function connectToken() {
+            const tokenInput = document.getElementById('gh-token');
+            const token = tokenInput.value.trim();
+            if (!token) {
+                alert('Paste your GitHub token first.');
+                return;
+            }
+            githubToken = token;
+            if (document.getElementById('remember-token').checked) {
+                localStorage.setItem('nesaPauAdminToken', token);
+            }
+            showSignedIn();
+            loadCourseDataForAdmin();
+        }
+
+        function disconnectToken() {
+            githubToken = null;
+            localStorage.removeItem('nesaPauAdminToken');
+            document.getElementById('signed-in-view').style.display = 'none';
+            document.getElementById('token-form').style.display = 'block';
+            document.getElementById('gh-token').value = '';
+            ['admin-level', 'admin-semester', 'admin-course'].forEach(id => {
+                document.getElementById(id).disabled = true;
+            });
+            document.getElementById('upload-btn').disabled = true;
+        }
+
+        function showSignedIn() {
+            document.getElementById('token-form').style.display = 'none';
+            document.getElementById('signed-in-view').style.display = 'block';
+        }
+
+        // ---------- Step 2: course dropdowns ----------
+        async function loadCourseDataForAdmin() {
+            try {
+                const res = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/data.json?ref=${GITHUB_BRANCH}`, {
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github+json'
+                    }
+                });
+                if (!res.ok) throw new Error(`Could not read data.json (status ${res.status}). Check your token and repo name.`);
+                const json = await res.json();
+                courseData = JSON.parse(base64ToUtf8(json.content));
+                document.getElementById('admin-level').disabled = false;
+                clearStatus();
+            } catch (err) {
+                setStatus('Connected, but failed to load course list: ' + err.message, 'error');
+            }
+        }
+
+        function onLevelChange() {
+            const level = document.getElementById('admin-level').value;
+            const semesterSelect = document.getElementById('admin-semester');
+            const courseSelect = document.getElementById('admin-course');
+
+            semesterSelect.value = '';
+            courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
+            courseSelect.disabled = true;
+            document.getElementById('upload-btn').disabled = true;
+
+            semesterSelect.disabled = !level;
+        }
+
+        function onSemesterChange() {
+            const level = document.getElementById('admin-level').value;
+            const semester = document.getElementById('admin-semester').value;
+            const courseSelect = document.getElementById('admin-course');
+
+            courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
+            document.getElementById('upload-btn').disabled = true;
+
+            if (level && semester && courseData && courseData[level] && courseData[level][semester]) {
+                courseData[level][semester].forEach(course => {
+                    const option = document.createElement('option');
+                    option.value = course.code;
+                    option.textContent = `${course.code} - ${course.name}`;
+                    courseSelect.appendChild(option);
+                });
+                courseSelect.disabled = false;
+                document.getElementById('upload-btn').disabled = false;
+            } else {
+                courseSelect.disabled = true;
+            }
+        }
+
+        // ---------- Base64 helpers (binary-safe, UTF-8 safe) ----------
+        function arrayBufferToBase64(buffer) {
+            const bytes = new Uint8Array(buffer);
+            let binary = '';
+            const chunkSize = 0x8000;
+            for (let i = 0; i < bytes.length; i += chunkSize) {
+                binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+            }
+            return btoa(binary);
+        }
+
+        function utf8ToBase64(str) {
+            const bytes = new TextEncoder().encode(str);
+            let binary = '';
+            const chunkSize = 0x8000;
+            for (let i = 0; i < bytes.length; i += chunkSize) {
+                binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+            }
+            return btoa(binary);
+        }
+
+        function base64ToUtf8(b64) {
+            const binary = atob(b64.replace(/\n/g, ''));
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+            return new TextDecoder('utf-8').decode(bytes);
+        }
+
+        function slugify(text) {
+            return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
+
+        // ---------- Upload flow ----------
+        async function uploadFile() {
+            const level = document.getElementById('admin-level').value;
+            const semester = document.getElementById('admin-semester').value;
+            const courseCode = document.getElementById('admin-course').value;
+            const label = document.getElementById('admin-label').value.trim();
+            const fileInput = document.getElementById('admin-file');
+            const file = fileInput.files[0];
+
+            if (!level || !semester || !courseCode) {
+                setStatus('Select a level, semester and course first.', 'error');
+                return;
+            }
+            if (!label) {
+                setStatus('Give this file a label, e.g. "2023/2024 First Semester Exam".', 'error');
+                return;
+            }
+            if (!file) {
+                setStatus('Choose a PDF file first.', 'error');
+                return;
+            }
+            if (file.type !== 'application/pdf') {
+                setStatus('That file is not a PDF. Please choose a .pdf file.', 'error');
+                return;
+            }
+            if (GITHUB_OWNER === 'YOUR_GITHUB_USERNAME' || GITHUB_REPO === 'YOUR_REPO_NAME') {
+                setStatus('This page has not been set up yet — edit GITHUB_OWNER and GITHUB_REPO at the top of admin.html.', 'error');
+                return;
+            }
+
+            const uploadBtn = document.getElementById('upload-btn');
+            uploadBtn.disabled = true;
+
+            try {
+                setStatus('Reading file...', 'info');
+                const arrayBuffer = await file.arrayBuffer();
+                const fileBase64 = arrayBufferToBase64(arrayBuffer);
+
+                const courseSlug = slugify(courseCode);
+                const fileSlug = slugify(label) || 'question';
+                const timestamp = Date.now();
+                const path = `pdfs/${courseSlug}/${fileSlug}-${timestamp}.pdf`;
+
+                setStatus('Uploading PDF to GitHub...', 'info');
+                const putFileRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github+json'
+                    },
+                    body: JSON.stringify({
+                        message: `Add past question: ${courseCode} - ${label}`,
+                        content: fileBase64,
+                        branch: GITHUB_BRANCH
+                    })
+                });
+
+                if (!putFileRes.ok) {
+                    const errBody = await putFileRes.json().catch(() => ({}));
+                    throw new Error(`Upload failed (status ${putFileRes.status}): ${errBody.message || 'unknown error'}`);
+                }
+
+                setStatus('PDF uploaded. Updating course list...', 'info');
+
+                // fetch the latest data.json (need current sha to update it safely)
+                const getDataRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/data.json?ref=${GITHUB_BRANCH}`, {
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github+json'
+                    }
+                });
+                if (!getDataRes.ok) throw new Error('PDF uploaded, but could not read data.json to register it. Check the repo manually.');
+                const dataJson = await getDataRes.json();
+                const latestData = JSON.parse(base64ToUtf8(dataJson.content));
+
+                const course = latestData[level][semester].find(c => c.code === courseCode);
+                if (!course) throw new Error('PDF uploaded, but that course was not found in data.json. Check the repo manually.');
+
+                course.files.push({ name: label, url: path });
+
+                const updatedContentBase64 = utf8ToBase64(JSON.stringify(latestData, null, 4));
+
+                const putDataRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/data.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github+json'
+                    },
+                    body: JSON.stringify({
+                        message: `Register past question: ${courseCode} - ${label}`,
+                        content: updatedContentBase64,
+                        sha: dataJson.sha,
+                        branch: GITHUB_BRANCH
+                    })
+                });
+
+                if (!putDataRes.ok) {
+                    const errBody = await putDataRes.json().catch(() => ({}));
+                    throw new Error(`PDF uploaded, but updating data.json failed (status ${putDataRes.status}): ${errBody.message || 'unknown error'}. If someone else uploaded at the same moment, just try again.`);
+                }
+
+                courseData = latestData;
+                setStatus(`Done! "${label}" was added to ${courseCode}. It can take a minute for GitHub Pages to update the live site.`, 'success');
+                document.getElementById('admin-label').value = '';
+                fileInput.value = '';
+            } catch (err) {
+                setStatus(err.message, 'error');
+            } finally {
+                uploadBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
