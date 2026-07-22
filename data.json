@@ -110,7 +110,16 @@
             {
                 "code": "ECO 205",
                 "name": "Structure of the Nigerian Economy",
-                "files": []
+                "files": [
+                    {
+                        "name": "ECO 205 2025/2026",
+                        "url": "pdfs/eco-205/eco-205-2025-2026-1784732364226.pdf"
+                    },
+                    {
+                        "name": "ECO 205 2024/2025",
+                        "url": "pdfs/eco-205/eco-205-2024-2025-1784732368663.pdf"
+                    }
+                ]
             },
             {
                 "code": "PAU-ECO 292",
