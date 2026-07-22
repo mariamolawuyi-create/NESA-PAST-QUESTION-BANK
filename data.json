@@ -252,7 +252,12 @@
             {
                 "code": "ECO 305",
                 "name": "History of Economic Thought",
-                "files": []
+                "files": [
+                    {
+                        "name": "History of Economic Thought",
+                        "url": "pdfs/eco-305/history-of-economic-thought-1784735531798.pdf"
+                    }
+                ]
             },
             {
                 "code": "ECO 310",
